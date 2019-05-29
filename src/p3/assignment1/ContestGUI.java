@@ -32,6 +32,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -289,7 +290,11 @@ public class ContestGUI extends JFrame implements Runnable {
                 displayLabel.setText("");
                 displayLabel.setIcon(logoIcon);
                 displayPanel.revalidate();
-
+                
+                aButton.setVisible(true);
+                bButton.setVisible(true);
+                cButton.setVisible(true);
+                dButton.setVisible(true);
             } else {
                 exitGame();
             }
@@ -322,7 +327,8 @@ public class ContestGUI extends JFrame implements Runnable {
         }
     }
 
-    private class helpButtonsMouseListener implements MouseListener // have not done the Audience and half half yet 
+
+    private class helpButtonsMouseListener implements MouseListener 
     {
 
         JButton jb;
@@ -332,7 +338,7 @@ public class ContestGUI extends JFrame implements Runnable {
             jb = (JButton) e.getSource();
             if (jb.equals(hintButton)) {
                 System.out.println("Hint Pressed");
-
+                hintButton.setVisible(false);
                 displayPanel.removeAll();
                 displayLabel = new JLabel(hint);
                 displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
@@ -340,6 +346,7 @@ public class ContestGUI extends JFrame implements Runnable {
                 displayPanel.revalidate();
             } else if (jb.equals(audienceButton)) // display audience panel
             {
+                audienceButton.setVisible(false);
                 System.out.println("Auidence Pressed");
 
                 displayPanel.removeAll();
@@ -347,7 +354,103 @@ public class ContestGUI extends JFrame implements Runnable {
                 displayLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
                 displayPanel.add(displayLabel);
                 displayPanel.revalidate();
+            } else if (jb.equals(halfButton)) // display audience panel
+            {
+                halfButton.setVisible(false);
+                System.out.println("HalfButton Pressed");
+                Random random = new Random();
+                int answerInt = 0;
+                if (a.charAt(0) == answer.charAt(0)) {
+                    answerInt = 0;
+                } else if (b.charAt(0) == answer.charAt(0)) {
+                    answerInt = 1;
+                } else if (c.charAt(0) == answer.charAt(0)) {
+                    answerInt = 2;
+                } else if (d.charAt(0) == answer.charAt(0)) {
+                    answerInt = 3;
+                }
+
+                boolean success;
+                int firstDisabledButton;
+                int secondDisabledButton;
+                //disable first button
+                do {
+                    success = true;
+                    firstDisabledButton = random.nextInt(4);
+                    switch (firstDisabledButton) {
+                        case 0:
+                            if (answerInt == 0) {
+                                success = false;
+                            } else {
+                                aButton.setVisible(false);
+                            }
+                            break;
+                        case 1:
+                            if (answerInt == 1) {
+                                success = false;
+                            } else {
+                                bButton.setVisible(false);
+                            }
+                            break;
+                        case 2:
+                            if (answerInt == 2) {
+                                success = false;
+                            } else {
+                                cButton.setVisible(false);
+                            }
+                            break;
+                        case 3:
+                            if (answerInt == 3) {
+                                success = false;
+                            } else {
+                                dButton.setVisible(false);
+                            }
+                            break;
+                    }
+                } while (success == false);
+
+                //disable second one
+                do {
+                    success = true;
+                    secondDisabledButton = random.nextInt(4);
+                    switch (secondDisabledButton) {
+                        case 0:
+                            if (answerInt == 0 || secondDisabledButton == firstDisabledButton) {
+                                success = false;
+                            } else {
+                                aButton.setVisible(false);
+
+                            }
+                            break;
+                        case 1:
+                            if (answerInt == 1 || secondDisabledButton == firstDisabledButton) {
+                                success = false;
+                            } else {
+                                bButton.setVisible(false);
+
+                            }
+                            break;
+                        case 2:
+                            if (answerInt == 2 || secondDisabledButton == firstDisabledButton) {
+                                success = false;
+                            } else {
+                                cButton.setVisible(false);
+
+                            }
+                            break;
+                        case 3:
+                            if (answerInt == 3 || secondDisabledButton == firstDisabledButton) {
+                                success = false;
+                            } else {
+                                dButton.setVisible(false);
+
+                            }
+                            break;
+
+                    }
+                } while (success == false);
             }
+
         }
 
         @Override
